@@ -1,7 +1,13 @@
-var restaurant = Ti.UI.currentWindow.restaurant;
+// First things first ..............
 var restaurantView = Ti.UI.createView({
   backgroundColor:'#E5E5DB'
 });
+// Pull the Restaurant object out of the call
+var restaurant = Ti.UI.currentWindow.restaurant;
+
+// =====================================================================================
+// UI
+// =====================================================================================
 
 var restaurantHeader = Ti.UI.createImageView({
   image:'../details_header.png',
@@ -25,9 +31,14 @@ var note = Ti.Map.createAnnotation({
   longitude:restaurant.longitude,
   title:restaurant.name,
   subtitle: Math.floor(restaurant.distance_to_center) + 'm, ' + restaurant.average_price_range,
-  pincolor:Titanium.Map.ANNOTATION_RED,
   animate:true
 });
+
+if (Ti.Platform.osname == 'android') {
+    note.pinImage = "../restaurant_pin.png";
+} else {
+    note.pincolor = Titanium.Map.ANNOTATION_RED;
+}
 
 var map = Ti.Map.createView({
   mapType: Ti.Map.STANDARD_TYPE,
@@ -58,15 +69,12 @@ var address = Ti.UI.createLabel({
 var phone = Ti.UI.createButton({
   title:restaurant.phone_number,
   backgroundImage:'../phone_background.png',
+  color:'#FFF',
   width:145,
   height:36,
   top:34,
   left:10
 });
-
-if (restaurant.phone_number == '') {
-  phone.title = 'unlisted';
-}
 
 var backButton = Ti.UI.createButton({
   backgroundImage:'../back_button.png',
@@ -84,8 +92,14 @@ var mapButton = Ti.UI.createButton({
   width:42
 });
 
+// Adding a label to a button in Android did not work
+// This is a h4x where we set the button's title instead
+// But we need to move the text over to align it with the "Dinos" text...
+// ...so we use a bunch of spaces...  =/
 var listedButton = Ti.UI.createButton({
   backgroundImage:'../listed.png',
+  title:'          "Want to Try"',      
+  color:'#377c8e',
   height:40,
   width:276,
   top:80,
@@ -94,6 +108,8 @@ var listedButton = Ti.UI.createButton({
 
 var eatenButton = Ti.UI.createButton({
   backgroundImage:'../dinos.png',
+  title:'None',
+  color:'#787a46',
   height:40,
   width:276,
   top:123,
@@ -127,19 +143,9 @@ var title = Ti.UI.createLabel({
   top:5
 });
 
-var listed = Ti.UI.createLabel({
-  text:'"Want to Try"',
-  color:'#377c8e',
-  width:165,
-  left:100
-});
-
-var eaten = Ti.UI.createLabel({
-  text:'None',
-  color:'#787a46',
-  width:165,
-  left:100
-});
+// =====================================================================================
+// EVENTS
+// =====================================================================================
 
 phone.addEventListener('click', function(e){
   number = e.source.title.replace(/\-|\(|\) /gi,'');
@@ -159,8 +165,17 @@ backButton.addEventListener('click', function(e){
   Ti.UI.currentWindow.close();
 });
 
-restaurantView.add(restaurantHeader);
-restaurantView.add(detailsBackground);
+// =====================================================================================
+// APP FLOW
+// =====================================================================================
+
+if (restaurant.phone_number == '') {
+  phone.title = 'unlisted';
+}
+
+scoreBackground.add(score);
+detailsBackground.add(scoreBackground);
+
 detailsBackground.add(map);
 detailsBackground.add(address);
 detailsBackground.add(phone);
@@ -169,10 +184,8 @@ detailsBackground.add(mapButton);
 detailsBackground.add(listedButton);
 detailsBackground.add(eatenButton);
 detailsBackground.add(title);
-detailsBackground.add(scoreBackground);
-scoreBackground.add(score);
 
-listedButton.add(listed);
-eatenButton.add(eaten);
+restaurantView.add(restaurantHeader);
+restaurantView.add(detailsBackground);
 
 Ti.UI.currentWindow.add(restaurantView);
