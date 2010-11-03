@@ -1,18 +1,46 @@
+// =====================================================================================
+// CONSTANTS
+// =====================================================================================
+
 var baseUrl = "http://dinevore:erovenid@api.dinevore.com/v1";
+
+var currentWindow = null;
+
+// =====================================================================================
+// HELPER FUNCTIONS
+// =====================================================================================
+
+function createAppSingleWindow(url, title) {
+    var win = Ti.UI.createWindow({
+        url: url,
+        title: title,
+        tabBarHidden:true,
+        navBarHidden:true
+    });
+
+    if (Ti.Platform.osname != 'android') {
+        win.hideTabBar();
+        
+        var tab = Ti.UI.createTab({
+            title: 'tab',
+            window: win
+        });
+    
+        var tabGroup = Ti.UI.createTabGroup();
+        tabGroup.addTab(tab);
+
+        tabGroup.open();
+    } else {
+        win.open();
+    }
+    
+    return win;
+}
 
 //check for network connectivity
 if (Ti.Network.online == false) {
   alert("You don't have internet access, please try again later");
 }
-
-// create tab group
-var tabGroup = Titanium.UI.createTabGroup();
-
-var login = Titanium.UI.createWindow({
-  tabBarHidden:true,
-  navBarHidden:true,
-  url:'windows/login.js'
-});
 
 Ti.App.addEventListener('updateGeo', function(event) {
   Ti.Geolocation.purpose = "Recieve User Location";
@@ -59,40 +87,8 @@ Ti.App.addEventListener('getNearby', function(event){
   getRequest(baseUrl + nearbyUrl + '&lat=' + event.lat + '&lon=' + event.lon, updateNearby);
 });
 
-//
-// create windows
-//
+// =====================================================================================
+// APP FLOW
+// =====================================================================================
 
-var nearby = Titanium.UI.createWindow({
-  title:'Nearby',
-  tabBarHidden:true,
-  navBarHidden:true,
-  url:'windows/nearby.js'
-});
-
-//
-// create tabs
-//
-var nearbyTab = Titanium.UI.createTab({
-    icon:'nearby.png',
-    title:'Nearby',
-    window:nearby
-});
-
-
-
-Ti.App.addEventListener('login', function(event){
-  var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-  if(reg.test(Ti.App.Properties.getString('email'))) {
-    login.close();
-    Ti.App.fireEvent('updateGeo');
-    // open tab group
-    tabGroup.open();
-  } else {
-    alert("You must provide your Dinevore email address to access your lists.");
-  }
-});
-
-tabGroup.addTab(nearbyTab);
-
-login.open();
+currentWindow = createAppSingleWindow('windows/login.js', 'Login');

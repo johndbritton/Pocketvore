@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-<id>com.48hourapps.pocketvore</id>
+<id>com.fourtyeighthourapps.pocketvore</id>
 <name>Pocketvore</name>
 <version>1.0</version>
 <publisher>48 Hour Apps</publisher>
 <url>http://www.48hourapps.com/pocketvore/</url>
 <description>Link with your Dinevore account to find nearby restaurants you want to eat at</description>
 <copyright>2010 48 Hour Apps</copyright>
-<icon>default_app_logo.png</icon>
+<icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
     <statusbar-style>default</statusbar-style>
