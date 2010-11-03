@@ -48,8 +48,10 @@ Ti.App.addEventListener('updateGeo', function(event) {
   Ti.Geolocation.getCurrentPosition(function(e) {
     if (e.error) {
       alert("We can't get your current location.");
+      /*
       tabGroup.close();
       login.open();
+      */
       return;
     }
     Ti.App.Properties.setDouble('lat', e.coords.latitude);

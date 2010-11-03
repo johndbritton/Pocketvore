@@ -36,42 +36,6 @@ var goButton = Ti.UI.createButton({
   bottom:40 
 });
 
-signupButton.addEventListener('click', function(e){
-  var closeWebViewButton = Ti.UI.createButton({
-    title:'Close'
-  });
-  
-  closeWebViewButton.addEventListener('click', function(e){
-    webViewWindow.close();
-  });
-  
-  var webViewWindow = Ti.UI.createWindow({
-    url:'web.js',
-    title:'Sign up for Dinevore',
-    leftNavButton:closeWebViewButton,
-    dest_url:'http://dinevore.com/signup/mobile'
-  });
-  webViewWindow.open({modal:true});
-});
-
-aboutButton.addEventListener('click', function(e){
-  var closeWebViewButton = Ti.UI.createButton({
-    title:'Close'
-  });
-  
-  closeWebViewButton.addEventListener('click', function(e){
-    webViewWindow.close();
-  });
-  
-  var webViewWindow = Ti.UI.createWindow({
-    url:'web.js',
-    title:'About Pocketvore',
-    leftNavButton:closeWebViewButton,
-    dest_url:'http://48hourapps.com/pocketvore'
-  });
-  webViewWindow.open({modal:true});
-});
-
 var emailTextField = Ti.UI.createTextField({
   backgroundImage:'../text_field.png',
   hintText:'name@example.com',
@@ -84,25 +48,75 @@ var emailTextField = Ti.UI.createTextField({
   bottom:104
 });
 
+// =====================================================================================
+// HELPER FUNCTIONS
+// =====================================================================================
+
+function openWebWindow(url, title) {
+    var closeWebViewButton = Ti.UI.createButton({
+        title:'Close'
+    });
+  
+    closeWebViewButton.addEventListener('click', function(e){
+        webViewWindow.close();
+    });
+  
+    var webViewWindow = Ti.UI.createWindow({
+        url:'web.js',
+        title:title,
+        leftNavButton:closeWebViewButton,
+        dest_url:url
+    });
+
+    webViewWindow.open({
+        modal:true
+    });
+}
+
+// =====================================================================================
+// EVENTS
+// =====================================================================================
+
+signupButton.addEventListener('click', function(e){
+    openWebWindow('http://dinevore.com/signup/mobile', 'Sign Up Up For Dinevore');
+});
+
+aboutButton.addEventListener('click', function(e){
+    openWebWindow('http://48hourapps.com/pocketvore', 'About Pocketvore');
+});
+
 goButton.addEventListener('click', function(e){
-  Ti.App.Properties.setString('email', emailTextField.value);
-  Ti.App.fireEvent('login');
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var user_email = emailTextField.value;
+    if(reg.test(user_email)) {
+        Ti.App.Properties.setString('email', user_email);
+        Ti.App.fireEvent('updateGeo');
+    } else {
+        alert("You must provide your Dinevore email address to access your lists.");
+    }  
 });
 
-emailTextField.addEventListener('focus', function(e){
-  loginView.top = -216;
-  loginView.bottom = 216;
-});
+// Apple-only events for text-field UX
+if (Ti.Platform.osname != 'android') {
+    emailTextField.addEventListener('focus', function(e){
+      loginView.top = -216;
+      loginView.bottom = 216;
+    });
+    
+    emailTextField.addEventListener('blur', function(e){
+      loginView.top = 0;
+      loginView.bottom = 0;
+    });
+}
 
-emailTextField.addEventListener('blur', function(e){
-  loginView.top = 0;
-  loginView.bottom = 0;
-});
+// =====================================================================================
+// APP FLOW
+// =====================================================================================
 
 loginView.add(background);
 loginView.add(aboutButton);
+loginView.add(emailTextField);
 loginView.add(signupButton);
 loginView.add(goButton);
-loginView.add(emailTextField);
 
 Ti.UI.currentWindow.add(loginView);
