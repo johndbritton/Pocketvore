@@ -3,7 +3,7 @@
 // =====================================================================================
 
 // TODO: Undo this before packaging
-var TESTING = true;
+var TESTING = false;
 
 var DINEVORE_URL_BASE = "http://dinevore:erovenid@api.dinevore.com/v1";
 
