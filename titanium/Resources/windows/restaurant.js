@@ -42,7 +42,7 @@ if (Ti.Platform.osname == 'android') {
 
 var map = Ti.Map.createView({
   mapType: Ti.Map.STANDARD_TYPE,
-  region: {latitude:restaurant.latitude, longitude:restaurant.longitude, 
+  region: {latitude:restaurant.latitude, longitude:restaurant.longitude,
           latitudeDelta:0.005, longitudeDelta:0.005},
   animate:true,
   regionFit:true,
@@ -98,7 +98,7 @@ var mapButton = Ti.UI.createButton({
 // ...so we use a bunch of spaces...  =/
 var listedButton = Ti.UI.createButton({
   backgroundImage:'../listed.png',
-  title:'          "Want to Try"',      
+  title:'          "Want to Try"',
   color:'#377c8e',
   height:40,
   width:276,
