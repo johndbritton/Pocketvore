@@ -25,8 +25,8 @@ function sortRestaurantsByDistance(a, b){
   return (a.distance_to_center - b.distance_to_center);
 }
 
-function openWindow(url, title, restaurant) {    
-    var win = Ti.UI.createWindow({  
+function openWindow(url, title, restaurant) {
+    var win = Ti.UI.createWindow({
         url: url,
         title: title,
         fullscreen: false,
@@ -34,13 +34,13 @@ function openWindow(url, title, restaurant) {
         navBarHidden:true,
         restaurant: restaurant
     });
-    
+
     if (Ti.UI.currentTab != null) {
         Ti.UI.currentTab.open(win, {});
     } else {
         win.open({});
     }
-    
+
     return win;
 }
 
@@ -65,11 +65,11 @@ Ti.App.addEventListener('updateNearby', function(event){
     if (restaurants[i].rounded_dinescore > 85) {
       backgroundImageUrl = '../high_score.png';
     } else if (restaurants[i].rounded_dinescore > 0) {
-      backgroundImageUrl = '../score.png';      
+      backgroundImageUrl = '../score.png';
     } else {
       backgroundImageUrl = '../no_score.png';
     }
-    
+
     // This is PURELY COSMETIC
     // Sux, I know...
     // ...but Android will format the rounded_dinescore as a decimal w/ 1 decimal place (XX.0)
@@ -118,7 +118,7 @@ Ti.App.addEventListener('updateNearby', function(event){
       right:5,
       height:16
     });
-    
+
     var cuisine = Ti.UI.createLabel({
       text:restaurants[i].supported_cuisines,
       font:{fontFamily:'Verdana',fontSize:14,fontStyle:'italic'},
@@ -128,7 +128,7 @@ Ti.App.addEventListener('updateNearby', function(event){
       height:20,
       width:130
     });
-    
+
     var score = Ti.UI.createLabel({
       text:formatted_score,
       font:{fontFamily:'Georgia',fontSize:24,fontWeight:'bold'},
@@ -148,9 +148,9 @@ Ti.App.addEventListener('updateNearby', function(event){
     row.restaurant = restaurants[i];
     row.className = 'nearby_row';
 
-    data.push(row);    
+    data.push(row);
   } // end of for loop creating rows
-  
+
   nearbyListTableView.setData(data);
 });
 

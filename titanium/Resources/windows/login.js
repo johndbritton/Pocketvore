@@ -9,7 +9,7 @@ var background = Ti.UI.createImageView({
   image:'../login_background.png',
   top:0,
   height:480,
-  width:320  
+  width:320
 });
 
 var aboutButton = Ti.UI.createButton({
@@ -33,7 +33,7 @@ var goButton = Ti.UI.createButton({
   height:44,
   width:129,
   right:20,
-  bottom:40 
+  bottom:40
 });
 
 var emailTextField = Ti.UI.createTextField({
@@ -56,11 +56,11 @@ function openWebWindow(url, title) {
     var closeWebViewButton = Ti.UI.createButton({
         title:'Close'
     });
-  
+
     closeWebViewButton.addEventListener('click', function(e){
         webViewWindow.close();
     });
-  
+
     var webViewWindow = Ti.UI.createWindow({
         url:'web.js',
         title:title,
@@ -93,7 +93,7 @@ goButton.addEventListener('click', function(e){
         Ti.App.fireEvent('updateGeo');
     } else {
         alert("You must provide your Dinevore email address to access your lists.");
-    }  
+    }
 });
 
 // Apple-only events for text-field UX
@@ -102,7 +102,7 @@ if (Ti.Platform.osname != 'android') {
       loginView.top = -216;
       loginView.bottom = 216;
     });
-    
+
     emailTextField.addEventListener('blur', function(e){
       loginView.top = 0;
       loginView.bottom = 0;
